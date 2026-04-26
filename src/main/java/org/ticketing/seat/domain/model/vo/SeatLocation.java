@@ -2,10 +2,10 @@ package org.ticketing.seat.domain.model.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.ws.rs.BadRequestException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.ticketing.common.exception.BadRequestException;
 
 import java.util.Objects;
 
@@ -14,7 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SeatLocation {
 
-    @Column(name = "column", nullable = false, length = 10)
+    @Column(name = "seat_column", nullable = false, length = 10)
     private String column;
 
     @Column(name = "seat_number", nullable = false)

@@ -1,9 +1,9 @@
 package org.ticketing.seat.domain.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.ws.rs.BadRequestException;
 import lombok.*;
 import org.ticketing.common.domain.BaseEntity;
+import org.ticketing.common.exception.BadRequestException;
 import org.ticketing.seat.domain.exception.SeatAlreadyDeletedException;
 import org.ticketing.seat.domain.model.vo.SeatLocation;
 
