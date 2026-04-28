@@ -3,6 +3,7 @@ package org.ticketing.seat.presentation.controller.internal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.ticketing.seat.application.service.SeatApplicationService;
+import org.ticketing.seat.application.service.SeatGradeApplicationService;
 import org.ticketing.seat.presentation.dto.response.SeatGradeResponseDto;
 import org.ticketing.seat.presentation.dto.response.SeatResponseDto;
 
@@ -15,6 +16,7 @@ import java.util.UUID;
 public class SeatInternalController {
 
     private final SeatApplicationService seatService;
+    private final SeatGradeApplicationService seatGradeService;
 
     @GetMapping("/seats/{stadiumId}")
     public List<SeatResponseDto> getSeatsByStadium(
@@ -30,7 +32,7 @@ public class SeatInternalController {
     public List<SeatGradeResponseDto> getSeatGradesByStadium(
             @PathVariable UUID stadiumId
     ) {
-        return seatService.getSeatGrades(stadiumId)
+        return seatGradeService.getSeatGrades(stadiumId)
                 .seatGrades()
                 .stream()
                 .map(SeatGradeResponseDto::from)
@@ -39,6 +41,6 @@ public class SeatInternalController {
 
     @GetMapping("/seat-grades/{seatGradeId}/exists")
     public boolean existsSeatGrade(@PathVariable UUID seatGradeId) {
-        return seatService.existsSeatGrade(seatGradeId);
+        return seatGradeService.existsSeatGrade(seatGradeId);
     }
 }
