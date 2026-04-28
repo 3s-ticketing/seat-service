@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/seats")
 public class SeatController {
 
     private final SeatApplicationService seatService;
@@ -21,7 +21,7 @@ public class SeatController {
     /**
      * 좌석 생성
      */
-    @PostMapping("/seats")
+    @PostMapping
     public void createSeats(
             @RequestBody CreateSeatsRequestDto request
     ) {
@@ -31,7 +31,7 @@ public class SeatController {
     /**
      * 좌석 자동 생성 (bulk)
      */
-    @PostMapping("/seats/bulk")
+    @PostMapping("/bulk")
     public void bulkCreateSeats(
             @RequestBody CreateSeatsBulkRequestDto request
     ) {
@@ -41,7 +41,7 @@ public class SeatController {
     /**
      * 좌석 목록 조회
      */
-    @GetMapping("/seats")
+    @GetMapping
     public GetSeatsResponseDto getSeats(
             @ModelAttribute GetSeatsRequestDto request,
             Pageable pageable
@@ -52,7 +52,7 @@ public class SeatController {
     /**
      * 좌석 단건 조회
      */
-    @GetMapping("/seats/{seatId}")
+    @GetMapping("/{seatId}")
     public SeatResponseDto getSeat(
             @PathVariable UUID seatId
     ) {
@@ -62,7 +62,7 @@ public class SeatController {
     /**
      * 좌석 등급 변경
      */
-    @PatchMapping("/seats/{seatId}/grade")
+    @PatchMapping("/{seatId}/grade")
     public void updateSeatGrade(
             @PathVariable UUID seatId,
             @RequestBody UpdateSeatGradeRequestDto request
@@ -73,53 +73,10 @@ public class SeatController {
     /**
      * 좌석 삭제
      */
-    @DeleteMapping("/seats/{seatId}")
+    @DeleteMapping("/{seatId}")
     public void deleteSeat(
             @PathVariable UUID seatId
     ) {
         seatService.deleteSeat(new DeleteSeatCommand(seatId, "temp"));
-    }
-
-    /**
-     * 좌석 등급 생성
-     */
-    @PostMapping("/seat-grades")
-    public void createSeatGrade(
-            @RequestBody CreateSeatGradeRequestDto request
-    ) {
-        seatService.createSeatGrade(request.toCommand());
-    }
-
-    /**
-     * 좌석 등급명 수정
-     */
-    @PatchMapping("/seat-grades/{seatGradeId}")
-    public void updateSeatGradeName(
-            @PathVariable UUID seatGradeId,
-            @RequestBody UpdateSeatGradeNameRequestDto request
-    ) {
-        seatService.updateSeatGradeName(request.toCommand(seatGradeId));
-    }
-
-    /**
-     * 좌석 등급 삭제
-     */
-    @DeleteMapping("/seat-grades/{seatGradeId}")
-    public void deleteSeatGrade(
-            @PathVariable UUID seatGradeId
-    ) {
-        seatService.deleteSeatGrade(new DeleteSeatGradeCommand(seatGradeId, "temp"));
-    }
-
-    /**
-     * 경기장 좌석 등급 목록 조회
-     */
-    @GetMapping("/seat-grades/{stadiumId}")
-    public GetSeatGradesResponseDto getSeatGrades(
-            @PathVariable UUID stadiumId
-    ) {
-        return GetSeatGradesResponseDto.from(
-                seatService.getSeatGrades(stadiumId)
-        );
     }
 }

@@ -13,12 +13,10 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class SeatApplicationService {
 
     // TODO: repository 주입
     // private final SeatRepository seatRepository;
-    // private final SeatGradeRepository seatGradeRepository;
 
     /**
      * 좌석 생성
@@ -67,44 +65,6 @@ public class SeatApplicationService {
      */
     @Transactional
     public void deleteSeat(DeleteSeatCommand command) {
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
-    /**
-     * 좌석 등급 생성
-     */
-    @Transactional
-    public void createSeatGrade(CreateSeatGradeCommand command) {
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
-    /**
-     * 좌석 등급명 수정
-     */
-    @Transactional
-    public void updateSeatGradeName(UpdateSeatGradeNameCommand command) {
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
-    /**
-     * 좌석 등급 삭제
-     */
-    @Transactional
-    public void deleteSeatGrade(DeleteSeatGradeCommand command) {
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
-    /**
-     * 경기장 좌석 등급 목록 조회
-     */
-    public GetSeatGradesResult getSeatGrades(UUID stadiumId) {
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
-    /**
-     * 좌석 등급 존재 여부 (internal API)
-     */
-    public boolean existsSeatGrade(UUID seatGradeId) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 }
