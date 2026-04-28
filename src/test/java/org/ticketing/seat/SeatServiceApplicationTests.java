@@ -1,4 +1,4 @@
-package com.ticketing.seat;
+package org.ticketing.seat;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
