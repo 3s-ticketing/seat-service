@@ -8,6 +8,7 @@ import org.ticketing.seat.application.dto.command.DeleteSeatGradeCommand;
 import org.ticketing.seat.application.dto.command.UpdateSeatGradeNameCommand;
 import org.ticketing.seat.application.dto.result.GetSeatGradesResult;
 import org.ticketing.seat.application.dto.result.SeatGradeResult;
+import org.ticketing.seat.domain.exception.SeatGradeNotFoundException;
 import org.ticketing.seat.domain.exception.StadiumNotFoundException;
 import org.ticketing.seat.domain.model.entity.SeatGrade;
 import org.ticketing.seat.domain.repository.SeatGradeRepository;
@@ -35,7 +36,10 @@ public class SeatGradeApplicationService {
 
     @Transactional
     public void updateSeatGradeName(UpdateSeatGradeNameCommand command) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        SeatGrade seatGrade = seatGradeRepository.findById(command.seatGradeId())
+                .orElseThrow(() -> new SeatGradeNotFoundException(command.seatGradeId()));
+
+        seatGrade.updateName(command.gradeName());
     }
 
     @Transactional
