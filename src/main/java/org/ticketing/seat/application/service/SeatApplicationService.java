@@ -74,11 +74,13 @@ public class SeatApplicationService {
         seatRepository.saveAll(seats);
     }
 
+    @Transactional(readOnly = true)
     public GetSeatsResult getSeatsByStadium(UUID stadiumId, Pageable pageable) {
         Page<Seat> seatPage = seatRepository.findByStadiumId(stadiumId, pageable);
         return GetSeatsResult.from(seatPage);
     }
 
+    @Transactional(readOnly = true)
     public SeatResult getSeat(UUID seatId) {
         Seat seat = seatRepository.findById(seatId)
                 .orElseThrow(() -> new SeatNotFoundException(seatId));
@@ -93,6 +95,9 @@ public class SeatApplicationService {
 
     @Transactional
     public void deleteSeat(DeleteSeatCommand command) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        Seat seat = seatRepository.findById(command.seatId())
+                .orElseThrow(() -> new SeatNotFoundException(command.seatId()));
+
+        seat.delete(command.deletedBy().toString());
     }
 }

@@ -80,8 +80,9 @@ public class SeatController {
      */
     @DeleteMapping("/{seatId}")
     public void deleteSeat(
-            @PathVariable UUID seatId
+            @PathVariable UUID seatId,
+            @RequestParam UUID userId // 임시 추가(삭제를 수행하는 유저 ID)
     ) {
-        seatService.deleteSeat(new DeleteSeatCommand(seatId, "temp"));
+        seatService.deleteSeat(new DeleteSeatCommand(seatId, userId));
     }
 }
