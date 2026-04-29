@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface SeatGradeRepository {
+
     Optional<SeatGrade> findById(UUID id);
+
     SeatGrade save(SeatGrade seatGrade);
 }

@@ -23,9 +23,9 @@ public class SeatGradeApplicationService {
 
     @Transactional
     public void createSeatGrade(CreateSeatGradeCommand command) {
-        if (!stadiumProvider.existsById(command.stadiumId())) {
-            throw new StadiumNotFoundException(command.stadiumId());
-        }
+//        if (!stadiumProvider.existsById(command.stadiumId())) {
+//            throw new StadiumNotFoundException(command.stadiumId());
+//        }
 
         SeatGrade seatGrade = SeatGrade.create(command.gradeName(), command.stadiumId());
         seatGradeRepository.save(seatGrade);

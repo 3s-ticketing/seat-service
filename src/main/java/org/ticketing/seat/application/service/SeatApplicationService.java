@@ -7,6 +7,7 @@ import org.ticketing.seat.application.dto.command.*;
 import org.ticketing.seat.application.dto.query.GetSeatsQuery;
 import org.ticketing.seat.application.dto.result.*;
 import org.ticketing.seat.domain.exception.SeatGradeNotFoundException;
+import org.ticketing.seat.domain.exception.SeatNotFoundException;
 import org.ticketing.seat.domain.exception.StadiumNotFoundException;
 import org.ticketing.seat.domain.model.entity.Seat;
 import org.ticketing.seat.domain.model.entity.SeatGrade;
@@ -51,9 +52,9 @@ public class SeatApplicationService {
 
     @Transactional
     public void bulkCreateSeats(CreateSeatsBulkCommand command) {
-        if (!stadiumProvider.existsById(command.stadiumId())) {
-            throw new StadiumNotFoundException(command.stadiumId());
-        }
+//        if (!stadiumProvider.existsById(command.stadiumId())) {
+//            throw new StadiumNotFoundException(command.stadiumId());
+//        }
 
         SeatGrade seatGrade = seatGradeRepository.findById(command.seatGradeId())
                 .orElseThrow(() -> new SeatGradeNotFoundException(command.seatGradeId()));
@@ -81,7 +82,10 @@ public class SeatApplicationService {
     }
 
     public SeatResult getSeat(UUID seatId) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        Seat seat = seatRepository.findById(seatId)
+                .orElseThrow(() -> new SeatNotFoundException(seatId));
+
+        return SeatResult.from(seat);
     }
 
     @Transactional

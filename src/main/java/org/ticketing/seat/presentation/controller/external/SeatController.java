@@ -2,6 +2,8 @@ package org.ticketing.seat.presentation.controller.external;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.ticketing.seat.application.dto.command.DeleteSeatCommand;
 import org.ticketing.seat.application.dto.command.DeleteSeatGradeCommand;
@@ -44,7 +46,7 @@ public class SeatController {
     @GetMapping
     public GetSeatsResponseDto getSeats(
             @ModelAttribute GetSeatsRequestDto request,
-            Pageable pageable
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         return GetSeatsResponseDto.from(seatService.getSeats(request.toQuery(pageable)));
     }
