@@ -45,7 +45,10 @@ public class SeatGradeApplicationService {
 
     @Transactional
     public void deleteSeatGrade(DeleteSeatGradeCommand command) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        SeatGrade seatGrade = seatGradeRepository.findById(command.seatGradeId())
+                .orElseThrow(() -> new SeatGradeNotFoundException(command.seatGradeId()));
+
+        seatGrade.delete(command.deletedBy().toString());
     }
 
     @Transactional(readOnly = true)

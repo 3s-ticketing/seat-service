@@ -45,9 +45,10 @@ public class SeatGradeController {
      */
     @DeleteMapping("/{seatGradeId}")
     public void deleteSeatGrade(
-            @PathVariable UUID seatGradeId
+            @PathVariable UUID seatGradeId,
+            @RequestParam UUID userId // 임시 추가(삭제를 수행하는 유저 ID)
     ) {
-        seatGradeService.deleteSeatGrade(new DeleteSeatGradeCommand(seatGradeId, "temp"));
+        seatGradeService.deleteSeatGrade(new DeleteSeatGradeCommand(seatGradeId, userId));
     }
 
     /**
