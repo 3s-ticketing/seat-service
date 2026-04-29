@@ -15,4 +15,6 @@ public interface SeatRepository {
     Seat save(Seat seat);
 
     void saveAll(List<Seat> seats);
+
+    Page<Seat> findByStadiumId(UUID stadiumId, Pageable pageable);
 }

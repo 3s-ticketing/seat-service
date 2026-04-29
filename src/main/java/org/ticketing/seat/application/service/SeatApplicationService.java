@@ -1,10 +1,11 @@
 package org.ticketing.seat.application.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.ticketing.seat.application.dto.command.*;
-import org.ticketing.seat.application.dto.query.GetSeatsQuery;
 import org.ticketing.seat.application.dto.result.*;
 import org.ticketing.seat.domain.exception.SeatGradeNotFoundException;
 import org.ticketing.seat.domain.exception.SeatNotFoundException;
@@ -52,9 +53,9 @@ public class SeatApplicationService {
 
     @Transactional
     public void bulkCreateSeats(CreateSeatsBulkCommand command) {
-//        if (!stadiumProvider.existsById(command.stadiumId())) {
-//            throw new StadiumNotFoundException(command.stadiumId());
-//        }
+        if (!stadiumProvider.existsById(command.stadiumId())) {
+            throw new StadiumNotFoundException(command.stadiumId());
+        }
 
         SeatGrade seatGrade = seatGradeRepository.findById(command.seatGradeId())
                 .orElseThrow(() -> new SeatGradeNotFoundException(command.seatGradeId()));
@@ -73,12 +74,9 @@ public class SeatApplicationService {
         seatRepository.saveAll(seats);
     }
 
-    public GetSeatsResult getSeats(GetSeatsQuery query) {
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
-    public List<SeatResult> getSeatsByStadium(UUID stadiumId) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public GetSeatsResult getSeatsByStadium(UUID stadiumId, Pageable pageable) {
+        Page<Seat> seatPage = seatRepository.findByStadiumId(stadiumId, pageable);
+        return GetSeatsResult.from(seatPage);
     }
 
     public SeatResult getSeat(UUID seatId) {

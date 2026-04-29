@@ -1,9 +1,13 @@
 package org.ticketing.seat.presentation.controller.internal;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.ticketing.seat.application.service.SeatApplicationService;
 import org.ticketing.seat.application.service.SeatGradeApplicationService;
+import org.ticketing.seat.presentation.dto.response.GetSeatsResponseDto;
 import org.ticketing.seat.presentation.dto.response.SeatGradeResponseDto;
 import org.ticketing.seat.presentation.dto.response.SeatResponseDto;
 
@@ -18,14 +22,12 @@ public class SeatInternalController {
     private final SeatApplicationService seatService;
     private final SeatGradeApplicationService seatGradeService;
 
-    @GetMapping("/seats/{stadiumId}")
-    public List<SeatResponseDto> getSeatsByStadium(
-            @PathVariable UUID stadiumId
+    @GetMapping("/seats")
+    public GetSeatsResponseDto getSeatsByStadium(
+            @RequestParam UUID stadiumId,
+            @PageableDefault(size = 10, sort = {"location.column", "location.seatNumber"}, direction = Sort.Direction.ASC) Pageable pageable
     ) {
-        return seatService.getSeatsByStadium(stadiumId)
-                .stream()
-                .map(SeatResponseDto::from)
-                .toList();
+        return GetSeatsResponseDto.from(seatService.getSeatsByStadium(stadiumId, pageable));
     }
 
     @GetMapping("/seat-grades/{stadiumId}")

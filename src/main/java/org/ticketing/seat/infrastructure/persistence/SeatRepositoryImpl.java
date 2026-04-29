@@ -31,4 +31,9 @@ public class SeatRepositoryImpl implements SeatRepository {
     public void saveAll(List<Seat> seats) {
         jpaSeatRepository.saveAll(seats);
     }
+
+    @Override
+    public Page<Seat> findByStadiumId(UUID stadiumId, Pageable pageable) {
+        return jpaSeatRepository.findByStadiumIdAndDeletedAtIsNull(stadiumId, pageable);
+    }
 }

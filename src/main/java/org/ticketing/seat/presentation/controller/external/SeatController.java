@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import org.ticketing.seat.application.dto.command.DeleteSeatCommand;
 import org.ticketing.seat.application.dto.command.DeleteSeatGradeCommand;
 import org.ticketing.seat.application.service.SeatApplicationService;
-import org.ticketing.seat.presentation.dto.request.*;
-import org.ticketing.seat.presentation.dto.response.*;
+import org.ticketing.seat.presentation.dto.request.CreateSeatsBulkRequestDto;
+import org.ticketing.seat.presentation.dto.request.CreateSeatsRequestDto;
+import org.ticketing.seat.presentation.dto.request.UpdateSeatGradeRequestDto;
+import org.ticketing.seat.presentation.dto.response.GetSeatsResponseDto;
+import org.ticketing.seat.presentation.dto.response.SeatResponseDto;
 
 import java.util.UUID;
 
@@ -41,14 +44,14 @@ public class SeatController {
     }
 
     /**
-     * 좌석 목록 조회
+     * 경기장별 좌석 목록 조회
      */
     @GetMapping
-    public GetSeatsResponseDto getSeats(
-            @ModelAttribute GetSeatsRequestDto request,
-            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    public GetSeatsResponseDto getSeatsByStadium(
+            @RequestParam UUID stadiumId,
+            @PageableDefault(size = 10, sort = {"location.column", "location.seatNumber"}, direction = Sort.Direction.ASC) Pageable pageable
     ) {
-        return GetSeatsResponseDto.from(seatService.getSeats(request.toQuery(pageable)));
+        return GetSeatsResponseDto.from(seatService.getSeatsByStadium(stadiumId, pageable));
     }
 
     /**
