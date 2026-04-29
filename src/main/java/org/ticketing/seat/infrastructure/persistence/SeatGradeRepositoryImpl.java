@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.ticketing.seat.domain.model.entity.SeatGrade;
 import org.ticketing.seat.domain.repository.SeatGradeRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,5 +28,10 @@ public class SeatGradeRepositoryImpl implements SeatGradeRepository {
     @Override
     public boolean existsById(UUID id) {
         return jpaSeatGradeRepository.existsByIdAndDeletedAtIsNull(id);
+    }
+
+    @Override
+    public List<SeatGrade> findByStadiumIdOrderByNameAsc(UUID stadiumId) {
+        return jpaSeatGradeRepository.findByStadiumIdAndDeletedAtIsNullOrderByGradeNameAsc(stadiumId);
     }
 }

@@ -14,6 +14,7 @@ import org.ticketing.seat.domain.model.entity.SeatGrade;
 import org.ticketing.seat.domain.repository.SeatGradeRepository;
 import org.ticketing.seat.domain.service.StadiumProvider;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -47,8 +48,15 @@ public class SeatGradeApplicationService {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
+    @Transactional(readOnly = true)
     public GetSeatGradesResult getSeatGrades(UUID stadiumId) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        if (!stadiumProvider.existsById(stadiumId)) {
+            throw new StadiumNotFoundException(stadiumId);
+        }
+
+        List<SeatGrade> seatGrades = seatGradeRepository.findByStadiumIdOrderByNameAsc(stadiumId);
+
+        return GetSeatGradesResult.from(seatGrades);
     }
 
     public boolean existsSeatGrade(UUID seatGradeId) {
