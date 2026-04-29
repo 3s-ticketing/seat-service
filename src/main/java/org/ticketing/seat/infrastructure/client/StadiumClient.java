@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.UUID;
 
-@FeignClient(name = "stadium-service")
+@FeignClient(name = "club-service")
 public interface StadiumClient {
 
     @GetMapping("/internal/stadiums/{stadiumId}/exists")
