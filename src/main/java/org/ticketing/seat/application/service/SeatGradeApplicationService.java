@@ -7,6 +7,7 @@ import org.ticketing.seat.application.dto.command.CreateSeatGradeCommand;
 import org.ticketing.seat.application.dto.command.DeleteSeatGradeCommand;
 import org.ticketing.seat.application.dto.command.UpdateSeatGradeNameCommand;
 import org.ticketing.seat.application.dto.result.GetSeatGradesResult;
+import org.ticketing.seat.application.dto.result.SeatGradeResult;
 import org.ticketing.seat.domain.exception.StadiumNotFoundException;
 import org.ticketing.seat.domain.model.entity.SeatGrade;
 import org.ticketing.seat.domain.repository.SeatGradeRepository;
@@ -22,13 +23,14 @@ public class SeatGradeApplicationService {
     private final StadiumProvider stadiumProvider;
 
     @Transactional
-    public void createSeatGrade(CreateSeatGradeCommand command) {
+    public SeatGradeResult createSeatGrade(CreateSeatGradeCommand command) {
         if (!stadiumProvider.existsById(command.stadiumId())) {
             throw new StadiumNotFoundException(command.stadiumId());
         }
 
         SeatGrade seatGrade = SeatGrade.create(command.gradeName(), command.stadiumId());
-        seatGradeRepository.save(seatGrade);
+
+        return SeatGradeResult.from(seatGradeRepository.save(seatGrade));
     }
 
     @Transactional
