@@ -90,7 +90,13 @@ public class SeatApplicationService {
 
     @Transactional
     public void updateSeatGrade(UpdateSeatGradeCommand command) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        Seat seat = seatRepository.findById(command.seatId())
+                .orElseThrow(() -> new SeatNotFoundException(command.seatId()));
+
+        SeatGrade seatGrade = seatGradeRepository.findById(command.seatGradeId())
+                .orElseThrow(() -> new SeatGradeNotFoundException(command.seatGradeId()));
+
+        seat.updateSeatGrade(seatGrade);
     }
 
     @Transactional

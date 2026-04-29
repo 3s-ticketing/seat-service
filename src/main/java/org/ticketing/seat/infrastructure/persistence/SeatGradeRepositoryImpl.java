@@ -23,4 +23,9 @@ public class SeatGradeRepositoryImpl implements SeatGradeRepository {
     public SeatGrade save(SeatGrade seatGrade) {
         return jpaSeatGradeRepository.save(seatGrade);
     }
+
+    @Override
+    public boolean existsById(UUID id) {
+        return jpaSeatGradeRepository.existsByIdAndDeletedAtIsNull(id);
+    }
 }

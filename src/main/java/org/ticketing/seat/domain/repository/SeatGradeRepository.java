@@ -10,4 +10,6 @@ public interface SeatGradeRepository {
     Optional<SeatGrade> findById(UUID id);
 
     SeatGrade save(SeatGrade seatGrade);
+
+    boolean existsById(UUID id);
 }
