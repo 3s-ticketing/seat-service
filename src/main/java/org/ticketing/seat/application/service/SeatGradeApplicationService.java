@@ -63,6 +63,6 @@ public class SeatGradeApplicationService {
     }
 
     public boolean existsSeatGrade(UUID seatGradeId) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return seatGradeRepository.existsById(seatGradeId);
     }
 }

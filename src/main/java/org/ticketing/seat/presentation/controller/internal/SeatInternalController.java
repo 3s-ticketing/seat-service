@@ -7,6 +7,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.ticketing.seat.application.service.SeatApplicationService;
 import org.ticketing.seat.application.service.SeatGradeApplicationService;
+import org.ticketing.seat.presentation.dto.response.GetSeatGradesResponseDto;
 import org.ticketing.seat.presentation.dto.response.GetSeatsResponseDto;
 import org.ticketing.seat.presentation.dto.response.SeatGradeResponseDto;
 import org.ticketing.seat.presentation.dto.response.SeatResponseDto;
@@ -31,14 +32,12 @@ public class SeatInternalController {
     }
 
     @GetMapping("/seat-grades/{stadiumId}")
-    public List<SeatGradeResponseDto> getSeatGradesByStadium(
+    public GetSeatGradesResponseDto getSeatGradesByStadium(
             @PathVariable UUID stadiumId
     ) {
-        return seatGradeService.getSeatGrades(stadiumId)
-                .seatGrades()
-                .stream()
-                .map(SeatGradeResponseDto::from)
-                .toList();
+        return GetSeatGradesResponseDto.from(
+                seatGradeService.getSeatGrades(stadiumId)
+        );
     }
 
     @GetMapping("/seat-grades/{seatGradeId}/exists")
