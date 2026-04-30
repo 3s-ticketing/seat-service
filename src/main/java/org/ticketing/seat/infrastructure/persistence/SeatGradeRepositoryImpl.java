@@ -7,6 +7,7 @@ import org.ticketing.seat.domain.repository.SeatGradeRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
@@ -33,5 +34,10 @@ public class SeatGradeRepositoryImpl implements SeatGradeRepository {
     @Override
     public List<SeatGrade> findByStadiumIdOrderByNameAsc(UUID stadiumId) {
         return jpaSeatGradeRepository.findByStadiumIdAndDeletedAtIsNullOrderByGradeNameAsc(stadiumId);
+    }
+
+    @Override
+    public List<SeatGrade> findAllActiveByIds(Set<UUID> gradeIds) {
+        return jpaSeatGradeRepository.findByIdInAndDeletedAtIsNull(gradeIds);
     }
 }

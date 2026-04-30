@@ -17,9 +17,8 @@ import org.ticketing.seat.domain.repository.SeatGradeRepository;
 import org.ticketing.seat.domain.repository.SeatRepository;
 import org.ticketing.seat.domain.service.StadiumProvider;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,14 +30,25 @@ public class SeatApplicationService {
 
     @Transactional
     public void createSeats(CreateSeatsCommand command) {
-        if (!stadiumProvider.existsById(command.stadiumId())) {
-            throw new StadiumNotFoundException(command.stadiumId());
-        }
+//        if (!stadiumProvider.existsById(command.stadiumId())) {
+//            throw new StadiumNotFoundException(command.stadiumId());
+//        }
+
+        Set<UUID> gradeIds = command.seats().stream()
+                .map(CreateSeatsCommand.SeatItem::seatGradeId)
+                .collect(Collectors.toSet());
+
+        List<SeatGrade> seatGrades = seatGradeRepository.findAllActiveByIds(gradeIds);
+
+        Map<UUID, SeatGrade> seatGradeMap = seatGrades.stream()
+                .collect(Collectors.toMap(SeatGrade::getId, sg -> sg));
 
         List<Seat> seats = command.seats().stream()
                 .map(item -> {
-                    SeatGrade seatGrade = seatGradeRepository.findById(item.seatGradeId())
-                            .orElseThrow(() -> new SeatGradeNotFoundException(item.seatGradeId()));
+                    SeatGrade seatGrade = seatGradeMap.get(item.seatGradeId());
+                    if (seatGrade == null) {
+                        throw new SeatGradeNotFoundException(item.seatGradeId());
+                    }
 
                     return Seat.create(
                             seatGrade,
