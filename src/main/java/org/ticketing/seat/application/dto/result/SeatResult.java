@@ -1,5 +1,7 @@
 package org.ticketing.seat.application.dto.result;
 
+import org.ticketing.seat.domain.model.entity.Seat;
+
 import java.util.UUID;
 
 public record SeatResult(
@@ -10,4 +12,14 @@ public record SeatResult(
         UUID seatGradeId,
         String gradeName
 ) {
+    public static SeatResult from(Seat seat) {
+        return new SeatResult(
+                seat.getId(),
+                seat.getStadiumId(),
+                seat.getLocation().getColumn(),
+                seat.getLocation().getSeatNumber(),
+                seat.getSeatGrade().getId(),
+                seat.getSeatGrade().getGradeName()
+        );
+    }
 }

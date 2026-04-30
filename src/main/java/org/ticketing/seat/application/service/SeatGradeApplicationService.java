@@ -7,52 +7,62 @@ import org.ticketing.seat.application.dto.command.CreateSeatGradeCommand;
 import org.ticketing.seat.application.dto.command.DeleteSeatGradeCommand;
 import org.ticketing.seat.application.dto.command.UpdateSeatGradeNameCommand;
 import org.ticketing.seat.application.dto.result.GetSeatGradesResult;
+import org.ticketing.seat.application.dto.result.SeatGradeResult;
+import org.ticketing.seat.domain.exception.SeatGradeNotFoundException;
+import org.ticketing.seat.domain.exception.StadiumNotFoundException;
+import org.ticketing.seat.domain.model.entity.SeatGrade;
 import org.ticketing.seat.domain.repository.SeatGradeRepository;
+import org.ticketing.seat.domain.service.StadiumProvider;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class SeatGradeApplicationService {
 
-    // TODO: repository 주입
-    // private final SeatGradeRepository seatGradeRepository;
+    private final SeatGradeRepository seatGradeRepository;
+    private final StadiumProvider stadiumProvider;
 
-    /**
-     * 좌석 등급 생성
-     */
     @Transactional
-    public void createSeatGrade(CreateSeatGradeCommand command) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public SeatGradeResult createSeatGrade(CreateSeatGradeCommand command) {
+        if (!stadiumProvider.existsById(command.stadiumId())) {
+            throw new StadiumNotFoundException(command.stadiumId());
+        }
+
+        SeatGrade seatGrade = SeatGrade.create(command.gradeName(), command.stadiumId());
+
+        return SeatGradeResult.from(seatGradeRepository.save(seatGrade));
     }
 
-    /**
-     * 좌석 등급명 수정
-     */
     @Transactional
     public void updateSeatGradeName(UpdateSeatGradeNameCommand command) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        SeatGrade seatGrade = seatGradeRepository.findById(command.seatGradeId())
+                .orElseThrow(() -> new SeatGradeNotFoundException(command.seatGradeId()));
+
+        seatGrade.updateName(command.gradeName());
     }
 
-    /**
-     * 좌석 등급 삭제
-     */
     @Transactional
     public void deleteSeatGrade(DeleteSeatGradeCommand command) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        SeatGrade seatGrade = seatGradeRepository.findById(command.seatGradeId())
+                .orElseThrow(() -> new SeatGradeNotFoundException(command.seatGradeId()));
+
+        seatGrade.delete(command.deletedBy().toString());
     }
 
-    /**
-     * 경기장 좌석 등급 목록 조회
-     */
+    @Transactional(readOnly = true)
     public GetSeatGradesResult getSeatGrades(UUID stadiumId) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        if (!stadiumProvider.existsById(stadiumId)) {
+            throw new StadiumNotFoundException(stadiumId);
+        }
+
+        List<SeatGrade> seatGrades = seatGradeRepository.findByStadiumIdOrderByNameAsc(stadiumId);
+
+        return GetSeatGradesResult.from(seatGrades);
     }
 
-    /**
-     * 좌석 등급 존재 여부 (internal API)
-     */
     public boolean existsSeatGrade(UUID seatGradeId) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return seatGradeRepository.existsById(seatGradeId);
     }
 }

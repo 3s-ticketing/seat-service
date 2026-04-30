@@ -4,6 +4,6 @@ import java.util.UUID;
 
 public record DeleteSeatGradeCommand(
         UUID seatGradeId,
-        String deletedBy
+        UUID deletedBy
 ) {
 }

@@ -8,6 +8,7 @@ import org.ticketing.seat.application.service.SeatGradeApplicationService;
 import org.ticketing.seat.presentation.dto.request.CreateSeatGradeRequestDto;
 import org.ticketing.seat.presentation.dto.request.UpdateSeatGradeNameRequestDto;
 import org.ticketing.seat.presentation.dto.response.GetSeatGradesResponseDto;
+import org.ticketing.seat.presentation.dto.response.SeatGradeResponseDto;
 
 import java.util.UUID;
 
@@ -22,10 +23,10 @@ public class SeatGradeController {
      * 좌석 등급 생성
      */
     @PostMapping
-    public void createSeatGrade(
+    public SeatGradeResponseDto createSeatGrade(
             @RequestBody CreateSeatGradeRequestDto request
     ) {
-        seatGradeService.createSeatGrade(request.toCommand());
+        return SeatGradeResponseDto.from(seatGradeService.createSeatGrade(request.toCommand()));
     }
 
     /**
@@ -44,9 +45,10 @@ public class SeatGradeController {
      */
     @DeleteMapping("/{seatGradeId}")
     public void deleteSeatGrade(
-            @PathVariable UUID seatGradeId
+            @PathVariable UUID seatGradeId,
+            @RequestParam UUID userId // 임시 추가(삭제를 수행하는 유저 ID)
     ) {
-        seatGradeService.deleteSeatGrade(new DeleteSeatGradeCommand(seatGradeId, "temp"));
+        seatGradeService.deleteSeatGrade(new DeleteSeatGradeCommand(seatGradeId, userId));
     }
 
     /**

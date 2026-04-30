@@ -2,12 +2,17 @@ package org.ticketing.seat.presentation.controller.external;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.ticketing.seat.application.dto.command.DeleteSeatCommand;
 import org.ticketing.seat.application.dto.command.DeleteSeatGradeCommand;
 import org.ticketing.seat.application.service.SeatApplicationService;
-import org.ticketing.seat.presentation.dto.request.*;
-import org.ticketing.seat.presentation.dto.response.*;
+import org.ticketing.seat.presentation.dto.request.CreateSeatsBulkRequestDto;
+import org.ticketing.seat.presentation.dto.request.CreateSeatsRequestDto;
+import org.ticketing.seat.presentation.dto.request.UpdateSeatGradeRequestDto;
+import org.ticketing.seat.presentation.dto.response.GetSeatsResponseDto;
+import org.ticketing.seat.presentation.dto.response.SeatResponseDto;
 
 import java.util.UUID;
 
@@ -39,14 +44,14 @@ public class SeatController {
     }
 
     /**
-     * 좌석 목록 조회
+     * 경기장별 좌석 목록 조회
      */
     @GetMapping
-    public GetSeatsResponseDto getSeats(
-            @ModelAttribute GetSeatsRequestDto request,
-            Pageable pageable
+    public GetSeatsResponseDto getSeatsByStadium(
+            @RequestParam UUID stadiumId,
+            @PageableDefault(size = 10, sort = {"location.column", "location.seatNumber"}, direction = Sort.Direction.ASC) Pageable pageable
     ) {
-        return GetSeatsResponseDto.from(seatService.getSeats(request.toQuery(pageable)));
+        return GetSeatsResponseDto.from(seatService.getSeatsByStadium(stadiumId, pageable));
     }
 
     /**
@@ -75,8 +80,9 @@ public class SeatController {
      */
     @DeleteMapping("/{seatId}")
     public void deleteSeat(
-            @PathVariable UUID seatId
+            @PathVariable UUID seatId,
+            @RequestParam UUID userId // 임시 추가(삭제를 수행하는 유저 ID)
     ) {
-        seatService.deleteSeat(new DeleteSeatCommand(seatId, "temp"));
+        seatService.deleteSeat(new DeleteSeatCommand(seatId, userId));
     }
 }

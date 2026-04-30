@@ -1,8 +1,16 @@
+server:
+  port: 8081
+
 spring:
   application:
     name: seat-service
   profiles:
     active: local
+
+  main:
+    #common 모듈에서 repository 스캔 겹침
+    #나중에 등록된 Bean이 기존 Bean을 덮어씀
+    allow-bean-definition-overriding: true
 
   config:
     import: "optional:configserver:"
@@ -15,7 +23,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
