@@ -30,9 +30,9 @@ public class SeatApplicationService {
 
     @Transactional
     public void createSeats(CreateSeatsCommand command) {
-//        if (!stadiumProvider.existsById(command.stadiumId())) {
-//            throw new StadiumNotFoundException(command.stadiumId());
-//        }
+        if (!stadiumProvider.existsById(command.stadiumId())) {
+            throw new StadiumNotFoundException(command.stadiumId());
+        }
 
         Set<UUID> gradeIds = command.seats().stream()
                 .map(CreateSeatsCommand.SeatItem::seatGradeId)
