@@ -17,7 +17,7 @@ public class SeatGradeRepositoryImpl implements SeatGradeRepository {
 
     @Override
     public Optional<SeatGrade> findById(UUID id) {
-        return jpaSeatGradeRepository.findById(id);
+        return jpaSeatGradeRepository.findByIdAndDeletedAtIsNull(id);
     }
 
     @Override
