@@ -18,6 +18,11 @@ public class StadiumProviderImpl implements StadiumProvider {
     public boolean existsById(UUID stadiumId) {
         StadiumExistsResponse response = stadiumClient.existsById(stadiumId);
 
-        return response != null && Boolean.FALSE.equals(response.data());
+        if(response == null || !response.success() || response.data() == null) {
+            throw new IllegalStateException("club-service 응답이 비정상입니다. traceId=" +
+                    (response != null ? response.traceId() : "null"));
+        }
+
+        return response.data();
     }
 }
