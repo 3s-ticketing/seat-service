@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.ticketing.seat.domain.service.StadiumProvider;
 import org.ticketing.seat.infrastructure.client.StadiumClient;
+import org.ticketing.seat.infrastructure.client.dto.StadiumExistsResponse;
 
 import java.util.UUID;
 
@@ -15,6 +16,8 @@ public class StadiumProviderImpl implements StadiumProvider {
 
     @Override
     public boolean existsById(UUID stadiumId) {
-        return stadiumClient.existsById(stadiumId);
+        StadiumExistsResponse response = stadiumClient.existsById(stadiumId);
+
+        return response != null && Boolean.FALSE.equals(response.data());
     }
 }
