@@ -44,4 +44,9 @@ public class SeatInternalController {
     public boolean existsSeatGrade(@PathVariable UUID seatGradeId) {
         return seatGradeService.existsSeatGrade(seatGradeId);
     }
+
+    @GetMapping("/seat-grades/{seatGradeId}/count")
+    public long countSeatsBySeatGradeId(@PathVariable UUID seatGradeId) {
+        return seatService.countSeatsBySeatGradeId(seatGradeId);
+    }
 }

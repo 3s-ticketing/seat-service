@@ -116,4 +116,9 @@ public class SeatApplicationService {
 
         seat.delete(command.deletedBy().toString());
     }
+
+    @Transactional(readOnly = true)
+    public long countSeatsBySeatGradeId(UUID seatGradeId) {
+        return seatRepository.countBySeatGradeId(seatGradeId);
+    }
 }

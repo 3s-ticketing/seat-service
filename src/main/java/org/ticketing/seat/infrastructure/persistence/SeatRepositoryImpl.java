@@ -36,4 +36,9 @@ public class SeatRepositoryImpl implements SeatRepository {
     public Page<Seat> findByStadiumId(UUID stadiumId, Pageable pageable) {
         return jpaSeatRepository.findByStadiumIdAndDeletedAtIsNull(stadiumId, pageable);
     }
+
+    @Override
+    public long countBySeatGradeId(UUID seatGradeId) {
+        return jpaSeatRepository.countBySeatGradeIdAndDeletedAtIsNull(seatGradeId);
+    }
 }
