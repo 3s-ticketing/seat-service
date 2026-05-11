@@ -17,4 +17,6 @@ public interface SeatRepository {
     void saveAll(List<Seat> seats);
 
     Page<Seat> findByStadiumId(UUID stadiumId, Pageable pageable);
+
+    long countBySeatGradeId(UUID seatGradeId);
 }

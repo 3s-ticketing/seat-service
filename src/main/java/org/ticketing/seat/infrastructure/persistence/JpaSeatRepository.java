@@ -16,4 +16,6 @@ public interface JpaSeatRepository extends JpaRepository<Seat, UUID> {
 
     @EntityGraph(attributePaths = "seatGrade")
     Page<Seat> findByStadiumIdAndDeletedAtIsNull(UUID stadiumId, Pageable pageable);
+
+    long countBySeatGradeIdAndDeletedAtIsNull(UUID seatGradeId);
 }

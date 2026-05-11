@@ -5,19 +5,27 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SeatSecurityConfig {
 
-    // 인증/인가 연동 전 임시 security config
+    // MVP 통합 테스트용 임시 SecurityConfig
     @Bean
     @Order(1)
-    public SecurityFilterChain clubFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain seatFilterChain(HttpSecurity http) throws Exception {
         return http
                 .securityMatcher("/**")
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().permitAll()
+                )
                 .build();
     }
 }
