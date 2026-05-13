@@ -31,6 +31,11 @@ public class SeatInternalController {
         return GetSeatsResponseDto.from(seatService.getSeatsByStadium(stadiumId, pageable));
     }
 
+    @GetMapping("/seats/{seatId}")
+    public SeatResponseDto getSeat(@PathVariable UUID seatId) {
+        return SeatResponseDto.from(seatService.getSeat(seatId));
+    }
+
     @GetMapping("/seat-grades/{stadiumId}")
     public GetSeatGradesResponseDto getSeatGradesByStadium(
             @PathVariable UUID stadiumId
